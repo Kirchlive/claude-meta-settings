@@ -1,0 +1,117 @@
+---
+title: "Running without Docker"
+description: "Run MetaMCP natively (Node + PostgreSQL) without Docker"
+---
+
+MetaMCP is just **two Node processes plus PostgreSQL**, so it can run directly on a
+host without Docker. The backend (Express/tRPC) listens on **12009**; the Next.js
+frontend listens on **12008** and proxies the backend paths (`/metamcp`, `/mcp-proxy`,
+`/trpc`, `/api/auth`, `/oauth`, `/.well-known`, `/health`) to `http://localhost:12009`.
+
+## Prerequisites
+
+- **Node.js 20+** and **pnpm 9** (matches the root `packageManager`).
+- **PostgreSQL 16**.
+- For STDIO MCP servers to launch, the runtime `PATH` must include whatever those
+  servers need (`node`, `npx`, `uvx`, etc.).
+
+## 1. Install dependencies
+
+```bash
+pnpm install --frozen-lockfile
+```
+
+## 2. Patch the Next.js proxy timeout
+
+Long-running MCP tool calls can exceed Next.js's internal 30s proxy timeout. Bump it
+to 10 minutes (idempotent — run after `pnpm install`, before starting the frontend):
+
+```bash
+sh scripts/patch-next-proxy-timeout.sh
+```
+
+## 3. Configure environment
+
+```bash
+cp example.env .env
+```
+
+Set at least:
+
+- `DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/DB`
+- `BETTER_AUTH_SECRET=` — a strong random value, e.g. `openssl rand -hex 32`
+- `APP_URL` and `NEXT_PUBLIC_APP_URL` — the public URL of the frontend (e.g. `http://localhost:12008`)
+- `TRANSFORM_LOCALHOST_TO_DOCKER_INTERNAL=false` — must be off natively (it rewrites
+  MCP server URLs to `host.docker.internal`, which only exists inside Docker)
+
+<Note>
+`NEXT_PUBLIC_APP_URL` is inlined into the frontend bundle at **build** time, so it
+must be set before `pnpm build`. The other variables are read at runtime.
+</Note>
+
+## 4. Build
+
+```bash
+NEXT_PUBLIC_APP_URL="http://localhost:12008" pnpm build
+```
+
+This builds the backend (tsup → `apps/backend/dist`) and the frontend (`next build`).
+
+## 5. Database & migrations
+
+Create the database and role, then apply migrations:
+
+```bash
+cd apps/backend
+pnpm exec drizzle-kit migrate      # uses DATABASE_URL
+cd -
+```
+
+## 6. Run the two processes
+
+```bash
+# backend
+PORT=12009 node apps/backend/dist/index.js
+
+# frontend
+PORT=12008 pnpm --filter frontend start
+```
+
+In production, run these under a process manager (systemd, launchd, pm2, …) with
+`DATABASE_URL`, `BETTER_AUTH_SECRET`, `APP_URL`, `NEXT_PUBLIC_APP_URL` in the
+environment and a `PATH` that lets spawned STDIO MCP servers resolve their binaries.
+
+## 7. Reverse proxy (optional)
+
+`deploy/nginx-metamcp.conf` is a ready-to-use nginx server block that proxies
+`:80 → 127.0.0.1:12008` with SSE-friendly long timeouts and buffering off. Add TLS
+only if the host is publicly reachable.
+
+## Migrating an existing Docker deployment
+
+Dump the dockerized database and restore it into the native PostgreSQL:
+
+```bash
+docker exec <pg-container> pg_dump -U USER -d DB --no-privileges > metamcp.sql
+psql "$DATABASE_URL" -f metamcp.sql
+```
+
+STDIO MCP servers registered while running under Docker may have stored
+**container-only paths** in `mcp_servers` (e.g. `/opt/...`, `/app/...`, or
+`host.docker.internal`). Repoint them to host paths. Inspect first:
+
+```sql
+SELECT uuid, name, command, args, env FROM mcp_servers
+WHERE array_to_string(args, ' ') LIKE '%/opt/%'
+   OR array_to_string(args, ' ') LIKE '%/app/%'
+   OR env::text LIKE '%host.docker.internal%';
+```
+
+Then update each affected row (`args` is `text[]`, `env` is `jsonb`):
+
+```sql
+UPDATE mcp_servers
+SET args = ARRAY['/absolute/host/path/to/server.js']::text[],
+    env  = jsonb_set(env, '{SOME_HOST}', '"127.0.0.1"', true)
+WHERE uuid = '<server-uuid>';
+```

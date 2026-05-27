@@ -1,4 +1,4 @@
-# 🚀 MetaMCP (MCP Aggregator, Orchestrator, Middleware, Gateway in one docker) <!-- omit in toc -->
+# 🚀 MetaMCP (MCP Aggregator, Orchestrator, Middleware, Gateway) <!-- omit in toc -->
 
 <div align="center">
 
@@ -20,7 +20,7 @@
 
 </div>
 
-> **📢 Update:** *[From the author: apologize for some recent maintainence delay, but will at least keep merging PRs, more background [here](recent-updates.md)]*
+> **📢 Native distribution:** this fork runs MetaMCP **without Docker** (Node + PostgreSQL on the host). See [Quick Start](#-quick-start) and [deploy/native-deployment.md](deploy/native-deployment.md).
 
 **MetaMCP** is a MCP proxy that lets you dynamically aggregate MCP servers into a unified MCP server, and apply middlewares. MetaMCP itself is a MCP server so it can be easily plugged into **ANY** MCP clients.
 
@@ -43,15 +43,13 @@ English | [中文](./README_cn.md)
   - [🔍 **Inspector**](#-inspector)
   - [✏️ **Tool Overrides \& Annotations**](#️-tool-overrides--annotations)
 - [🚀 Quick Start](#-quick-start)
-  - [🐳 Run with Docker Compose (Recommended)](#-run-with-docker-compose-recommended)
-  - [📦 Build development environment with Dev Containers (VSCode/Cursor)](#-build-development-environment-with-dev-containers-vscodecursor)
   - [💻 Local Development](#-local-development)
 - [🔌 MCP Protocol Compatibility](#-mcp-protocol-compatibility)
 - [🔗 Connect to MetaMCP](#-connect-to-metamcp)
   - [📝 E.g., Cursor via mcp.json](#-eg-cursor-via-mcpjson)
   - [🖥️ Connecting Claude Desktop and Other STDIO-only Clients](#️-connecting-claude-desktop-and-other-stdio-only-clients)
   - [🔧 API Key Auth Troubleshooting](#-api-key-auth-troubleshooting)
-- [❄️ Cold Start Problem and Custom Dockerfile](#️-cold-start-problem-and-custom-dockerfile)
+- [❄️ Cold Start Behavior](#️-cold-start-behavior)
 - [🧾 Log Levels](#-log-levels)
 - [🔐 Authentication](#-authentication)
 - [🚦 Traffic Management](#-traffic-management)
@@ -119,7 +117,7 @@ DATABASE_URL=${DB_CONNECTION_STRING}
 
 > **🔒 Security Note**: Environment variable references (`${VAR_NAME}`) are resolved from the MetaMCP container's environment at runtime. This keeps actual secret values out of your configuration and git repository.
 
-> **⚙️ Development Note**: For local development with `pnpm run dev:docker`, ensure your environment variables are listed in `turbo.json` under `globalEnv` to be passed to the development processes. This is not required for production Docker deployments.
+> **⚙️ Development Note**: For local development with `pnpm dev`, ensure your environment variables are listed in `turbo.json` under `globalEnv` so they are passed through to the dev processes.
 
 ### 🏷️ **MetaMCP Namespace**
 - Group one or more MCP servers into a namespace
@@ -149,60 +147,35 @@ Similar to the official MCP inspector, but with **saved server configs** - MetaM
 
 ## 🚀 Quick Start
 
-### **🐳 Run with Docker Compose (Recommended)**
+MetaMCP runs as **two Node processes plus PostgreSQL** — no Docker required.
 
-Clone repo, prepare `.env`, and start with docker compose:
+**Prerequisites:** Node.js 20+, pnpm 9, PostgreSQL 16.
 
 ```bash
-git clone https://github.com/metatool-ai/metamcp.git
+git clone https://github.com/Kirchlive/metamcp.git
 cd metamcp
-cp example.env .env
-docker compose up -d
+pnpm install --frozen-lockfile
+sh scripts/patch-next-proxy-timeout.sh                 # bump Next.js proxy timeout for long MCP calls
+cp example.env .env                                    # set DATABASE_URL, BETTER_AUTH_SECRET, APP_URL,
+                                                       # NEXT_PUBLIC_APP_URL; TRANSFORM_LOCALHOST_TO_DOCKER_INTERNAL=false
+NEXT_PUBLIC_APP_URL="http://localhost:12008" pnpm build
+cd apps/backend && pnpm exec drizzle-kit migrate && cd -   # create the DB/role first
+PORT=12009 node apps/backend/dist/index.js &           # backend
+PORT=12008 pnpm --filter frontend start                # frontend → http://localhost:12008
 ```
 
-If you modify APP_URL env vars, make sure you only access from the APP_URL, because MetaMCP enforces CORS policy on the URL, so no other URL is accessible.
+See **[deploy/native-deployment.md](deploy/native-deployment.md)** for the full guide — env vars (build-time vs runtime), process managers (systemd/launchd/pm2), nginx, and migrating an existing Docker deployment.
 
-Note that the pg volume name may collide with your other pg dockers, which is global, consider rename it in `docker-compose.yml`:
-
-```
-volumes:
-  metamcp_postgres_data:
-    driver: local
-```
-
-### **📦 Build development environment with Dev Containers (VSCode/Cursor)**
-
-You can use the VSCode/Cursor extension to build the development environment in a container.
-
-It only requires that you have an environment running Docker or a similar alternative (the `docker`/`docker compose` command is required), and no other dependent components need to be installed on your host machine.
-
-1. First, clone the MetaMCP source code, open project in Visual Studio Code.
-```bash
-git clone https://github.com/metatool-ai/metamcp.git
-cd metamcp
-code .
-```
-2. Switch to Dev Containers. Open the VSCode Command Palette, and execute `Dev Containers: Reopen in Container`.
-
-VSCode will open the Dev Containers project in a new window, where it will build the runtime and install the toolchain according to the `Dockerfile` before starting the connection and finally installing the MetaMCP dependencies.
-<img width="895" height="153" alt="image" src="https://github.com/user-attachments/assets/d3e1420d-43c1-4ed6-9229-b91ea09c142a" />
-
-> **note**
-> This process requires a reliable network connection, and it will access Docker Hub, GitHub, and some other sites. You will need to ensure the network connection yourself, otherwise the container build may fail.
-
-Wait some minutes, depending on the internet connection or computer performance, it may take from a few minutes to tens of minutes, you can click on the Progress Bar in the bottom right corner to view a live log where you will be able to check unusual stuck.
-<img width="732" height="173" alt="image" src="https://github.com/user-attachments/assets/6e5752f8-7353-4a8f-b489-c13daef6700e" />
-
-After finished, you can run `pnpm dev` to start the development server.
+If you modify `APP_URL`, access MetaMCP only from that URL — MetaMCP enforces a CORS policy against it, so no other URL is accessible.
 
 ### **💻 Local Development**
-
-Still recommend running postgres through docker for easy setup:
 
 ```bash
 pnpm install
 pnpm dev
 ```
+
+`pnpm dev` runs the frontend (:12008) and backend (:12009) in watch mode. You need a PostgreSQL 16 instance reachable via `DATABASE_URL` in your `.env`.
 
 ## 🔌 MCP Protocol Compatibility
 
@@ -287,13 +260,10 @@ For more details and alternative approaches, see [issue #76](https://github.com/
 - Best practice is to use the API key in `Authorization: Bearer <API_KEY>` header.
 - Try disable auth temporarily when you face connection issues to see if it is an auth issue.
 
-## ❄️ Cold Start Problem and Custom Dockerfile
+## ❄️ Cold Start Behavior
 
-- MetaMCP pre-allocate idle sessions for each configured MCP servers and MetaMCPs. The default idle session for each is 1 and that can help reduce cold start time.
-- If your MCP requires dependencies other than `uvx` or `npx`, you need to customize the Dockerfile to install dependencies on your own.
-- Check [invalidation.md](invalidation.md) for a seq diagram about how idle session invalidates during updates.
-
-🛠️ **Solution**: Customize the Dockerfile to add dependencies or pre-install packages to reduce cold start time.
+- MetaMCP pre-allocates idle sessions for each configured MCP server and MetaMCP. The default is 1 idle session each, which helps reduce cold-start time.
+- STDIO MCP servers spawn as child processes of the backend, so their runtime dependencies (`uvx`, `npx`, `node`, …) must be available on the host `PATH`. Install whatever your servers need on the host.
 
 ## 🧾 Log Levels
 
@@ -315,7 +285,6 @@ MetaMCP’s backend writes logs to files and optionally mirrors selected levels 
     ```bash
     LOG_LEVEL='errors-only' # 'all', 'info', 'errors-only', 'none'
     ```
-  - `docker-compose.dev.yml` uses: `LOG_LEVEL: ${LOG_LEVEL:-all}`
 
 ## 🔐 Authentication
 
@@ -428,14 +397,14 @@ Both controls work independently, giving you full flexibility over your registra
 
 If you want to deploy it to a online service or a VPS, a instance of at least 2GB-4GB of memory is required. And the larger size, the better performance.
 
-Since MCP leverages SSE for long connection, if you are using reverse proxy like nginx, please refer to an example setup [nginx.conf.example](nginx.conf.example)
+Since MCP leverages SSE for long connections, if you use a reverse proxy like nginx, see the example server block at [deploy/nginx-metamcp.conf](deploy/nginx-metamcp.conf).
 
 ## 🏗️ Architecture
 
 - **Frontend**: Next.js
 - **Backend**: Express.js with tRPC, hosting MCPs through TS SDK and internal proxy
 - **Auth**: Better Auth
-- **Structure**: Standalone monorepo with Turborepo and Docker publishing
+- **Structure**: Standalone monorepo with Turborepo
 
 ### 📊 Sequence Diagram
 

@@ -57,6 +57,7 @@
           {
             "group": "Deployment",
             "pages": [
+              "en/deployment/native-deployment",
               "en/deployment/custom-deployment"
             ]
           },
