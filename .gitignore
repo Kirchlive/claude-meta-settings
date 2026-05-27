@@ -45,3 +45,9 @@ yarn-error.log*
 # Docker Files
 docker-compose.override.yml
 compose.override.yml
+
+# Claude Code harness / local artifacts
+/.claude/
+.claude/worktrees/
+.env.*.bak
+*.log
