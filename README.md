@@ -27,7 +27,6 @@
 
 For more details, consider visiting our documentation site: https://docs.metamcp.com
 
-English | [中文](./README_cn.md)
 ## 📋 Table of Contents <!-- omit in toc -->
 
 - [🎯 Use Cases](#-use-cases)
@@ -442,9 +441,7 @@ sequenceDiagram
 
 ## 🌐 i18n
 
-See [README-i18n.md](README-i18n.md)
-
-Currently en and zh locale are supported, but welcome contributions.
+The dashboard UI ships English and Chinese (zh) locales.
 
 ## 🤝 Contributing
 

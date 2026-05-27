@@ -66,7 +66,6 @@
             "pages": [
               "en/integrations/cursor",
               "en/integrations/claude-desktop",
-              "en/integrations/open-web-ui",
               "en/integrations/general-stdio-with-api-key",
               "en/integrations/general-stdio-with-oauth"
             ]
@@ -83,58 +82,6 @@
             "group": "Troubleshooting",
             "pages": [
               "en/troubleshooting/oauth-troubleshooting"
-            ]
-          }
-        ]
-      },
-      {
-        "language": "cn",
-        "groups": [
-          {
-            "group": "快速开始",
-            "pages": [
-              "cn/index",
-              "cn/quickstart"
-            ]
-          },
-          {
-            "group": "核心概念",
-            "pages": [
-              "cn/concepts/mcp-servers",
-              "cn/concepts/namespaces",
-              "cn/concepts/endpoints",
-              "cn/concepts/middleware",
-              "cn/concepts/inspector"
-            ]
-          },
-          {
-            "group": "部署",
-            "pages": [
-              "cn/deployment/custom-deployment"
-            ]
-          },
-          {
-            "group": "集成",
-            "pages": [
-              "cn/integrations/cursor",
-              "cn/integrations/claude-desktop",
-              "cn/integrations/open-web-ui",
-              "cn/integrations/general-stdio-with-api-key",
-              "cn/integrations/general-stdio-with-oauth"
-            ]
-          },
-          {
-            "group": "开发",
-            "pages": [
-              "cn/development/contributing",
-              "cn/development/i18n",
-              "cn/development/architecture"
-            ]
-          },
-          {
-            "group": "故障排除",
-            "pages": [
-              "cn/troubleshooting/oauth-troubleshooting"
             ]
           }
         ]
