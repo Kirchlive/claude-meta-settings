@@ -1,5 +1,5 @@
 {
-  "title": "MetaMCP Endpoints",
+  "title": "claude-meta-settings Endpoints",
   "description": "Create public unified MCP server endpoints that map to namespaces for external access",
   "createEndpoint": "Create Endpoint",
   "createEndpointDescription": "Create a new public endpoint and select a namespace to map it to",

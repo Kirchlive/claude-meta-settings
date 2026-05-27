@@ -1,7 +1,7 @@
-This guide walks you through deploying MetaMCP on a DigitalOcean VPS running Ubuntu from scratch, as an example.
+This guide walks you through deploying claude-meta-settings on a DigitalOcean VPS running Ubuntu from scratch, as an example.
 
 <Note>
-This guide uses Docker. To run MetaMCP directly on a host without Docker, see
+This guide uses Docker. To run claude-meta-settings directly on a host without Docker, see
 [Running without Docker](/en/deployment/native-deployment).
 </Note>
 
@@ -13,7 +13,7 @@ This guide uses Docker. To run MetaMCP directly on a host without Docker, see
 
 ## System Requirements
 
-MetaMCP requires at least **2GB-4GB of memory** for optimal performance. The larger the instance, the better the performance due to MCP server pre-allocation and Docker operations.
+claude-meta-settings requires at least **2GB-4GB of memory** for optimal performance. The larger the instance, the better the performance due to MCP server pre-allocation and Docker operations.
 
 **Recommended DigitalOcean Droplet:**
 - **Basic/Regular**: 2GB RAM, 1 vCPU, 50GB SSD ($12/month)
@@ -122,15 +122,15 @@ Log out and back in for group changes to take effect, or run:
 newgrp docker
 ```
 
-## Step 3: Deploy MetaMCP
+## Step 3: Deploy claude-meta-settings
 
 ### 3.1 Clone the Repository
 
 ```bash
 cd /opt
-sudo git clone https://github.com/metatool-ai/metamcp.git
+sudo git clone https://github.com/Kirchlive/claude-meta-settings.git
 sudo chown -R $USER:$USER metamcp
-cd metamcp
+cd claude-meta-settings
 ```
 
 ### 3.2 Configure Environment
@@ -187,7 +187,7 @@ volumes:
     driver: local
 ```
 
-### 3.4 Start MetaMCP
+### 3.4 Start claude-meta-settings
 
 ```bash
 # Pull images and start services

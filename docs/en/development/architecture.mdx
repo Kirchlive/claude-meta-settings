@@ -4,23 +4,23 @@
 ```mermaid
 sequenceDiagram
     participant MCPClient as MCP Client (e.g., Claude Desktop)
-    participant MetaMCP as MetaMCP Server
+    participant claude-meta-settings as claude-meta-settings Server
     participant MCPServers as Installed MCP Servers
 
-    MCPClient ->> MetaMCP: Request list tools
+    MCPClient ->> claude-meta-settings: Request list tools
 
     loop For each listed MCP Server
-        MetaMCP ->> MCPServers: Request list_tools
-        MCPServers ->> MetaMCP: Return list of tools
+        claude-meta-settings ->> MCPServers: Request list_tools
+        MCPServers ->> claude-meta-settings: Return list of tools
     end
 
-    MetaMCP ->> MetaMCP: Aggregate tool lists & apply middleware
-    MetaMCP ->> MCPClient: Return aggregated list of tools
+    claude-meta-settings ->> claude-meta-settings: Aggregate tool lists & apply middleware
+    claude-meta-settings ->> MCPClient: Return aggregated list of tools
 
-    MCPClient ->> MetaMCP: Call tool
-    MetaMCP ->> MCPServers: call_tool to target MCP Server
-    MCPServers ->> MetaMCP: Return tool response
-    MetaMCP ->> MCPClient: Return tool response
+    MCPClient ->> claude-meta-settings: Call tool
+    claude-meta-settings ->> MCPServers: call_tool to target MCP Server
+    MCPServers ->> claude-meta-settings: Return tool response
+    claude-meta-settings ->> MCPClient: Return tool response
 ```
 
 ### Idle Session invalidation

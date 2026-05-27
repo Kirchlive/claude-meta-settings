@@ -1,9 +1,9 @@
 ---
 title: "Running without Docker"
-description: "Run MetaMCP natively (Node + PostgreSQL) without Docker"
+description: "Run claude-meta-settings natively (Node + PostgreSQL) without Docker"
 ---
 
-MetaMCP is just **two Node processes plus PostgreSQL**, so it can run directly on a
+claude-meta-settings is just **two Node processes plus PostgreSQL**, so it can run directly on a
 host without Docker. The backend (Express/tRPC) listens on **12009**; the Next.js
 frontend listens on **12008** and proxies the backend paths (`/metamcp`, `/mcp-proxy`,
 `/trpc`, `/api/auth`, `/oauth`, `/.well-known`, `/health`) to `http://localhost:12009`.

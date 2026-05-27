@@ -1,9 +1,9 @@
 ---
 title: "Cursor Integration"
-description: "Configure Cursor IDE to use MetaMCP endpoints via mcp.json"
+description: "Configure Cursor IDE to use claude-meta-settings endpoints via mcp.json"
 ---
 
-**Cursor** is a popular AI-powered code editor that supports MCP (Model Context Protocol) integration. This guide shows you how to connect Cursor to your MetaMCP endpoints for enhanced coding capabilities.
+**Cursor** is a popular AI-powered code editor that supports MCP (Model Context Protocol) integration. This guide shows you how to connect Cursor to your claude-meta-settings endpoints for enhanced coding capabilities.
 
 Also refer to Cursor's doc on MCP https://docs.cursor.com/context/mcp
 
@@ -12,8 +12,8 @@ Also refer to Cursor's doc on MCP https://docs.cursor.com/context/mcp
 Before starting, ensure you have:
 
 - **Cursor IDE** installed and running
-- **MetaMCP** running locally or deployed
-- **Active endpoint** configured in MetaMCP
+- **claude-meta-settings** running locally or deployed
+- **Active endpoint** configured in claude-meta-settings
 - **API key** generated (if authentication is enabled)
 
 ## Basic Configuration
@@ -26,7 +26,7 @@ Create or edit your `mcp.json` file in Cursor's configuration directory:
 ```json Basic Configuration
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "url": "http://localhost:12008/metamcp/your-endpoint-name/mcp"
     }
   }
@@ -36,7 +36,7 @@ Create or edit your `mcp.json` file in Cursor's configuration directory:
 ```json With Authentication
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "url": "http://localhost:12008/metamcp/your-endpoint-name/mcp",
       "headers": {
         "Authorization": "Bearer sk_mt_your_api_key_here"
@@ -49,13 +49,13 @@ Create or edit your `mcp.json` file in Cursor's configuration directory:
 ```json Multiple Endpoints
 {
   "mcpServers": {
-    "MetaMCP-Dev": {
+    "claude-meta-settings-Dev": {
       "url": "http://localhost:12008/metamcp/dev-tools/mcp",
       "headers": {
         "Authorization": "Bearer sk_mt_dev_key"
       }
     },
-    "MetaMCP-Research": {
+    "claude-meta-settings-Research": {
       "url": "http://localhost:12008/metamcp/research-tools/mcp",
       "headers": {
         "Authorization": "Bearer sk_mt_research_key"
@@ -70,14 +70,14 @@ Create or edit your `mcp.json` file in Cursor's configuration directory:
 
 ### Transport Types
 
-MetaMCP supports different transport protocols. **Streamable HTTP is recommended** for Cursor:
+claude-meta-settings supports different transport protocols. **Streamable HTTP is recommended** for Cursor:
 
 <AccordionGroup>
   <Accordion title="Streamable HTTP (Recommended)">
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "url": "http://localhost:12008/metamcp/your-endpoint-name/mcp"
         }
       }
@@ -89,7 +89,7 @@ MetaMCP supports different transport protocols. **Streamable HTTP is recommended
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "url": "http://localhost:12008/metamcp/your-endpoint-name/sse"
         }
       }
@@ -107,7 +107,7 @@ MetaMCP supports different transport protocols. **Streamable HTTP is recommended
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "url": "http://localhost:12008/metamcp/your-endpoint-name/mcp",
           "headers": {
             "Authorization": "Bearer sk_mt_your_key_here"
@@ -124,7 +124,7 @@ MetaMCP supports different transport protocols. **Streamable HTTP is recommended
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "url": "http://localhost:12008/metamcp/public-tools/sse"
         }
       }

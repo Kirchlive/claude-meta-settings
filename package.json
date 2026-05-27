@@ -1,5 +1,5 @@
 {
-  "name": "metamcp",
+  "name": "claude-meta-settings",
   "private": true,
   "scripts": {
     "build": "turbo run build",

@@ -1,12 +1,12 @@
 ---
 title: "Quick Start"
-description: "Get MetaMCP running in minutes and configure your first MCP servers"
+description: "Get claude-meta-settings running in minutes and configure your first MCP servers"
 ---
 
-Get MetaMCP up and running in just a few minutes and configure your first MCP server aggregation.
+Get claude-meta-settings up and running in just a few minutes and configure your first MCP server aggregation.
 
 <Note>
-This quick start uses Docker. To run MetaMCP directly on a host without Docker
+This quick start uses Docker. To run claude-meta-settings directly on a host without Docker
 (Node + PostgreSQL), see [Running without Docker](/en/deployment/native-deployment).
 </Note>
 
@@ -21,11 +21,11 @@ Before starting, ensure you have:
 
 <AccordionGroup>
   <Accordion icon="github" title="Clone the Repository">
-    Clone MetaMCP from GitHub and navigate to the project directory:
+    Clone claude-meta-settings from GitHub and navigate to the project directory:
     
     ```bash
-    git clone https://github.com/metatool-ai/metamcp.git
-    cd metamcp
+    git clone https://github.com/Kirchlive/claude-meta-settings.git
+    cd claude-meta-settings
     ```
   </Accordion>
 
@@ -37,20 +37,20 @@ Before starting, ensure you have:
     ```
     
     <Note>
-      If you modify `APP_URL` in the `.env` file, make sure you only access MetaMCP from that URL due to CORS policy enforcement.
+      If you modify `APP_URL` in the `.env` file, make sure you only access claude-meta-settings from that URL due to CORS policy enforcement.
     </Note>
     <Warning>In production environment, make sure you modify POSTGRES_PASSWORD and BETTER_AUTH_SECRET. Also use HTTPS. A typical way to generate secrets is `openssl rand -hex 32 | base64`</Warning>
   </Accordion>
 
   <Accordion icon="docker" title="Start with Docker Compose">
-    Launch MetaMCP using Docker Compose:
+    Launch claude-meta-settings using Docker Compose:
     
     ```bash
     docker compose up -d
     ```
     
     This will start:
-    - MetaMCP fullstack docker image
+    - claude-meta-settings fullstack docker image
     - PostgreSQL database
     
     <Tip>
@@ -59,14 +59,14 @@ Before starting, ensure you have:
   </Accordion>
 </AccordionGroup>
 
-## Step 2: Access MetaMCP
+## Step 2: Access claude-meta-settings
 
 Once the containers are running:
 
 1. **Open your browser** and go to `http://localhost:12008` (or your configured `APP_URL`)
 2. **Create an account** or log in
 3. **Explore the dashboard** - you'll see sections for MCP Servers, Namespaces, and Endpoints
-4. **(Optional) Disable signup** You may only allow you and your team access MetaMCP, so once you setup the accounts, you can disable new user registration in Settings page.
+4. **(Optional) Disable signup** You may only allow you and your team access claude-meta-settings, so once you setup the accounts, you can disable new user registration in Settings page.
 
 ## Step 3: Configure Your First MCP Server
 
@@ -224,7 +224,7 @@ Once the containers are running:
     3. Fill out the API key form:
     
     **Key Information:**
-    - **Description**: `My first MetaMCP API key for news endpoint`
+    - **Description**: `My first claude-meta-settings API key for news endpoint`
     - **Scope**: 
       - **Private**: Only you can use this key
       - **Public**: All users can use this key
@@ -308,11 +308,11 @@ Once the containers are running:
   </Card>
   
   <Card title="Connect to Cursor" icon="mouse-pointer-2" href="/en/integrations/cursor">
-    Configure Cursor IDE to use your MetaMCP endpoints
+    Configure Cursor IDE to use your claude-meta-settings endpoints
   </Card>
   
   <Card title="Connect to Claude Desktop" icon="monitor-dot" href="/en/integrations/claude-desktop">
-    Set up Claude Desktop with MetaMCP using mcp-proxy
+    Set up Claude Desktop with claude-meta-settings using mcp-proxy
   </Card>
 </CardGroup>
 
@@ -320,11 +320,11 @@ Once the containers are running:
 
 <AccordionGroup>
   <Accordion icon="warning" title="Common Issues">
-    **CORS errors**: Ensure you're accessing MetaMCP from the URL specified in `APP_URL`.
+    **CORS errors**: Ensure you're accessing claude-meta-settings from the URL specified in `APP_URL`.
     
     **Database connection**: Check that PostgreSQL container is running with `docker ps`.
     
-    **Memory issues**: MetaMCP requires at least 2GB RAM for optimal performance.
+    **Memory issues**: claude-meta-settings requires at least 2GB RAM for optimal performance.
     
     **Server connection failures**: Check MCP server logs in the server detail pages.
     
@@ -332,7 +332,6 @@ Once the containers are running:
   </Accordion>
 
   <Accordion icon="question" title="Need Help?">
-    - Browse [GitHub Issues](https://github.com/metatool-ai/metamcp/issues)
-    - Join our [Discord community](https://discord.gg/mNsyat7mFX)
+    - Browse [GitHub Issues](https://github.com/Kirchlive/claude-meta-settings/issues)
   </Accordion>
 </AccordionGroup>

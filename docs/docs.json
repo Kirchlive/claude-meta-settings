@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "MetaMCP",
+  "name": "claude-meta-settings",
   "logo": {
     "light": "/favicon.png",
     "dark": "/favicon.png"
@@ -22,13 +22,8 @@
     "links": [
       {
         "label": "GitHub",
-        "href": "https://github.com/metatool-ai/metamcp",
+        "href": "https://github.com/Kirchlive/claude-meta-settings",
         "icon": "github"
-      },
-      {
-        "label": "Discord",
-        "href": "https://discord.gg/mNsyat7mFX",
-        "icon": "discord"
       }
     ]
   },
@@ -90,8 +85,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/metatool-ai/metamcp",
-      "discord": "https://discord.gg/mNsyat7mFX"
+      "github": "https://github.com/Kirchlive/claude-meta-settings"
     }
   }
 }

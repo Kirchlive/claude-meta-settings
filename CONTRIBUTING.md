@@ -1,12 +1,12 @@
-# Contributing to MetaMCP
+# Contributing to claude-meta-settings
 
-We welcome contributions to MetaMCP! This guide will help you get started.
+We welcome contributions to claude-meta-settings! This guide will help you get started.
 
 ## Development Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/metatool-ai/metamcp.git
+   git clone https://github.com/Kirchlive/claude-meta-settings.git
    cd metamcp
    ```
 
@@ -29,7 +29,7 @@ This runs the backend on port 12009 and the frontend on port 12008. You need a P
 
 ## OpenID Connect (OIDC) Provider Setup
 
-MetaMCP supports OpenID Connect authentication for enterprise SSO integration. This is optional and can be configured alongside the default email/password authentication.
+claude-meta-settings supports OpenID Connect authentication for enterprise SSO integration. This is optional and can be configured alongside the default email/password authentication.
 
 ### Configuration
 
@@ -99,4 +99,4 @@ Enable debug logging by setting the auth logger level in `apps/backend/src/auth.
 
 ## License
 
-By contributing to MetaMCP, you agree that your contributions will be licensed under the MIT License. 
+By contributing to claude-meta-settings, you agree that your contributions will be licensed under the MIT License. 

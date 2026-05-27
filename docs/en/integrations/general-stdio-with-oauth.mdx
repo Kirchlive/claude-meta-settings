@@ -1,31 +1,31 @@
 ---
 title: "General Stdio Integration using `mcp-remote` with OAuth"
-description: "Configure any stdio-based MCP client to connect to MetaMCP endpoints using mcp-remote with OAuth authentication"
+description: "Configure any stdio-based MCP client to connect to claude-meta-settings endpoints using mcp-remote with OAuth authentication"
 ---
 
-**General Stdio Integration with OAuth** allows any MCP client that supports stdio servers to connect to MetaMCP's remote endpoints using OAuth authentication. Since MetaMCP endpoints are remote-only (SSE, Streamable HTTP), you'll need a local proxy to bridge the connection.
+**General Stdio Integration with OAuth** allows any MCP client that supports stdio servers to connect to claude-meta-settings's remote endpoints using OAuth authentication. Since claude-meta-settings endpoints are remote-only (SSE, Streamable HTTP), you'll need a local proxy to bridge the connection.
 
 ## Prerequisites
 
 Before starting, ensure you have:
 
 - **MCP client** that supports stdio servers (Claude Desktop, Cursor, etc.)
-- **MetaMCP** running locally or deployed with OAuth enabled
-- **Active endpoint** configured in MetaMCP
-- **OAuth application** registered in MetaMCP
+- **claude-meta-settings** running locally or deployed with OAuth enabled
+- **Active endpoint** configured in claude-meta-settings
+- **OAuth application** registered in claude-meta-settings
 - **mcp-remote** available via npx (`npx -y mcp-remote`)
 
 ## Basic Configuration
 
 ### Using mcp-remote (Required)
 
-Since MetaMCP endpoints are remote only, you need `mcp-remote` to convert between stdio and HTTP/SSE protocols with OAuth authentication.
+Since claude-meta-settings endpoints are remote only, you need `mcp-remote` to convert between stdio and HTTP/SSE protocols with OAuth authentication.
 
 <CodeGroup>
 ```json Basic OAuth Configuration
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "command": "npx",
       "args": [
         "-y",
@@ -40,7 +40,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-remote` to convert betwee
 ```json Multiple Endpoints
 {
   "mcpServers": {
-    "MetaMCP-Dev": {
+    "claude-meta-settings-Dev": {
       "command": "npx",
       "args": [
         "-y",
@@ -48,7 +48,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-remote` to convert betwee
         "http://localhost:12008/metamcp/dev-tools/mcp"
       ]
     },
-    "MetaMCP-Research": {
+    "claude-meta-settings-Research": {
       "command": "npx",
       "args": [
         "-y",
@@ -83,7 +83,7 @@ When you first connect, `mcp-remote` will:
 - **Replace** `your-endpoint-name` with your actual endpoint name for public endpoints
 - **mcp-remote** handles the protocol conversion between stdio and HTTP/SSE
 - **OAuth flow** requires browser interaction on first connection
-- **No manual OAuth setup** required - MetaMCP handles it automatically
+- **No manual OAuth setup** required - claude-meta-settings handles it automatically
 
 <CardGroup cols={2}>
   <Card title="MCP OAuth Troubleshooting" icon="lock" href="/en/troubleshooting/oauth-troubleshooting">
@@ -91,14 +91,14 @@ When you first connect, `mcp-remote` will:
   </Card>
   
   <Card title="General Stdio Integration using `mcp-proxy` with API Key" icon="globe" href="/en/integrations/general-stdio-with-api-key">
-    Configure any stdio-based MCP client to connect to MetaMCP endpoints using mcp-proxy
+    Configure any stdio-based MCP client to connect to claude-meta-settings endpoints using mcp-proxy
   </Card>
   
   <Card title="Connect to Cursor" icon="mouse-pointer-2" href="/en/integrations/cursor">
-    Configure Cursor IDE to use your MetaMCP endpoints
+    Configure Cursor IDE to use your claude-meta-settings endpoints
   </Card>
   
   <Card title="Connect to Claude Desktop" icon="monitor-dot" href="/en/integrations/claude-desktop">
-    Set up Claude Desktop with MetaMCP using mcp-proxy
+    Set up Claude Desktop with claude-meta-settings using mcp-proxy
   </Card>
 </CardGroup>

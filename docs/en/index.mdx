@@ -1,13 +1,13 @@
 ---
-title: "MetaMCP Documentation"
+title: "claude-meta-settings Documentation"
 description: "MCP Aggregator, Orchestrator, Middleware, Gateway in one docker"
 ---
 
 <div align="center">
 
-<img src="/images/metamcp.svg" alt="MetaMCP Diagram" style={{ width: "100%", maxWidth: "600px", margin: "2rem 0" }} />
+<img src="/images/metamcp.svg" alt="claude-meta-settings Diagram" style={{ width: "100%", maxWidth: "600px", margin: "2rem 0" }} />
 
-**MetaMCP** is a MCP proxy that lets you dynamically aggregate MCP servers into a unified MCP server, and apply middlewares. MetaMCP itself is a MCP server so it can be easily plugged into **ANY** MCP clients.
+**claude-meta-settings** is a MCP proxy that lets you dynamically aggregate MCP servers into a unified MCP server, and apply middlewares. claude-meta-settings itself is a MCP server so it can be easily plugged into **ANY** MCP clients.
 
 </div>
 
@@ -21,27 +21,27 @@ description: "MCP Aggregator, Orchestrator, Middleware, Gateway in one docker"
     Pick only the tools you need when remixing MCP servers. Apply pluggable middleware for observability and security.
   </Card>
   <Card title="Enhanced Inspector" icon="search-code">
-    Use as enhanced MCP inspector with saved server configs, and inspect your MetaMCP endpoints.
+    Use as enhanced MCP inspector with saved server configs, and inspect your claude-meta-settings endpoints.
   </Card>
   <Card title="Context Engineering Engine for MCP" icon="search">
     Use as Elasticsearch for MCP tool selection (coming soon).
   </Card>
 </CardGroup>
 
-Generally developers can use MetaMCP as **infrastructure** to host dynamically composed MCP servers through a unified endpoint, and build agents on top of it.
+Generally developers can use claude-meta-settings as **infrastructure** to host dynamically composed MCP servers through a unified endpoint, and build agents on top of it.
 
 <div align="center">
-  <img src="/images/metamcp_screenshot.png" alt="MetaMCP Screenshot" style={{ width: "100%", maxWidth: "800px", margin: "2rem 0", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }} />
+  <img src="/images/metamcp_screenshot.png" alt="claude-meta-settings Screenshot" style={{ width: "100%", maxWidth: "800px", margin: "2rem 0", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }} />
 </div>
 
 ## Quick Start
 
-Get MetaMCP running in minutes with Docker Compose:
+Get claude-meta-settings running in minutes with Docker Compose:
 
 <CodeGroup>
 ```bash Clone & Setup
-git clone https://github.com/metatool-ai/metamcp.git
-cd metamcp
+git clone https://github.com/Kirchlive/claude-meta-settings.git
+cd claude-meta-settings
 cp example.env .env
 ```
 
@@ -56,7 +56,7 @@ docker compose up -d
 
 ## Core Concepts
 
-Understanding these key concepts will help you get the most out of MetaMCP:
+Understanding these key concepts will help you get the most out of claude-meta-settings:
 
 <CardGroup cols={2}>
   <Card title="MCP Servers" icon="server" href="/en/concepts/mcp-servers">
@@ -75,11 +75,11 @@ Understanding these key concepts will help you get the most out of MetaMCP:
 
 ## Integrations
 
-Connect MetaMCP to your favorite tools and platforms:
+Connect claude-meta-settings to your favorite tools and platforms:
 
 <CardGroup cols={2}>
   <Card title="Cursor" icon="mouse-pointer-2" href="/en/integrations/cursor">
-    Configure Cursor to use MetaMCP endpoints via mcp.json
+    Configure Cursor to use claude-meta-settings endpoints via mcp.json
   </Card>
   <Card title="Claude Desktop" icon="monitor-dot" href="/en/integrations/claude-desktop">
     Connect Claude Desktop using mcp-proxy for STDIO compatibility
@@ -122,16 +122,13 @@ Connect MetaMCP to your favorite tools and platforms:
 ## Getting Help
 
 <CardGroup cols={2}>
-  <Card title="Contributing to MetaMCP" icon="code" href="/en/development/contributing">
-    Set up a local development environment and contribute to MetaMCP.
+  <Card title="Contributing to claude-meta-settings" icon="code" href="/en/development/contributing">
+    Set up a local development environment and contribute to claude-meta-settings.
   </Card>
    <Card title="API Reference" icon="book" href="/en/api-reference/introduction">
-    Explore the complete API documentation for MetaMCP endpoints.
+    Explore the complete API documentation for claude-meta-settings endpoints.
   </Card>
-  <Card title="GitHub Issues" icon="github" href="https://github.com/metatool-ai/metamcp/issues">
+  <Card title="GitHub Issues" icon="github" href="https://github.com/Kirchlive/claude-meta-settings/issues">
     Report bugs, request features, or browse existing issues.
-  </Card>
-  <Card title="Discord Community" icon="discord" href="https://discord.gg/mNsyat7mFX">
-    Join our Discord server for support and community discussions.
   </Card>
 </CardGroup>

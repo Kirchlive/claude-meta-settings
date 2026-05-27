@@ -1,30 +1,30 @@
 ---
 title: "Claude Desktop Integration"
-description: "Configure Claude Desktop to connect to MetaMCP endpoints using mcp-proxy"
+description: "Configure Claude Desktop to connect to claude-meta-settings endpoints using mcp-proxy"
 ---
 
-**Claude Desktop** integration allows you to access MetaMCP tools directly through Claude's interface. Since Claude Desktop only supports stdio servers, you'll need a local proxy to connect to MetaMCP's remote endpoints.
+**Claude Desktop** integration allows you to access claude-meta-settings tools directly through Claude's interface. Since Claude Desktop only supports stdio servers, you'll need a local proxy to connect to claude-meta-settings's remote endpoints.
 
 ## Prerequisites
 
 Before starting, ensure you have:
 
 - **Claude Desktop** installed and running
-- **MetaMCP** running locally or deployed
-- **Active endpoint** configured in MetaMCP
+- **claude-meta-settings** running locally or deployed
+- **Active endpoint** configured in claude-meta-settings
 - **API key** generated (if authentication is enabled)
 
 ## Basic Configuration
 
 ### Using mcp-proxy (Recommended)
 
-Since MetaMCP endpoints are remote only (SSE, Streamable HTTP), Claude Desktop needs a local proxy to connect. Based on testing, `mcp-proxy` is the recommended solution for API key authentication.
+Since claude-meta-settings endpoints are remote only (SSE, Streamable HTTP), Claude Desktop needs a local proxy to connect. Based on testing, `mcp-proxy` is the recommended solution for API key authentication.
 
 <CodeGroup>
 ```json Streamable HTTP (Recommended)
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -43,7 +43,7 @@ Since MetaMCP endpoints are remote only (SSE, Streamable HTTP), Claude Desktop n
 ```json SSE (Alternative)
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -60,7 +60,7 @@ Since MetaMCP endpoints are remote only (SSE, Streamable HTTP), Claude Desktop n
 ```json Multiple Endpoints
 {
   "mcpServers": {
-    "MetaMCP-Dev": {
+    "claude-meta-settings-Dev": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -72,7 +72,7 @@ Since MetaMCP endpoints are remote only (SSE, Streamable HTTP), Claude Desktop n
         "API_ACCESS_TOKEN": "sk_mt_dev_key"
       }
     },
-    "MetaMCP-Research": {
+    "claude-meta-settings-Research": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -104,7 +104,7 @@ Edit Claude Desktop's configuration file at:
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "command": "uvx",
           "args": [
             "mcp-proxy",
@@ -127,7 +127,7 @@ Edit Claude Desktop's configuration file at:
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "command": "uvx",
           "args": [
             "mcp-proxy",
@@ -142,12 +142,12 @@ Edit Claude Desktop's configuration file at:
 
 ## Remote/Production Setup
 
-For remote MetaMCP instances, simply replace the localhost URL:
+For remote claude-meta-settings instances, simply replace the localhost URL:
 
 ```json
 {
   "mcpServers": {
-    "MetaMCP-Production": {
+    "claude-meta-settings-Production": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -166,7 +166,7 @@ For remote MetaMCP instances, simply replace the localhost URL:
 ## Important Notes
 
 - **Replace** `your-endpoint-name` with your actual endpoint name
-- **Replace** `sk_mt_your_api_key_here` with your MetaMCP API key
+- **Replace** `sk_mt_your_api_key_here` with your claude-meta-settings API key
 - **mcp-proxy** handles the protocol conversion between stdio and HTTP/SSE
 - **Environment variables** are the secure way to pass API keys
-- For detailed troubleshooting, see [issue #76](https://github.com/metatool-ai/metamcp/issues/76) 
+- For detailed troubleshooting, see [issue #76](https://github.com/Kirchlive/claude-meta-settings/issues/76) 

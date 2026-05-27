@@ -163,12 +163,12 @@ export default function SidebarLayout({
             <div className="flex items-center gap-4">
               <Image
                 src="/favicon.ico"
-                alt="MetaMCP Logo"
+                alt="claude-meta-settings Logo"
                 width={256}
                 height={256}
                 className="h-12 w-12"
               />
-              <h2 className="text-2xl font-semibold">MetaMCP</h2>
+              <h2 className="text-2xl font-semibold">claude-meta-settings</h2>
             </div>
           </div>
         </SidebarHeader>

@@ -18,9 +18,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "MetaMCP",
+  title: "claude-meta-settings",
   description:
-    "MetaMCP is dev platform for dynamically configuring and deploying MCPs",
+    "claude-meta-settings is dev platform for dynamically configuring and deploying MCPs",
 };
 
 interface RootLayoutProps {

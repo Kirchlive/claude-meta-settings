@@ -1,8 +1,8 @@
 {
   "exploreMcpServers": "Explore MCP Servers (beta)",
   "mcpServers": "MCP Servers",
-  "metamcpNamespaces": "MetaMCP Namespaces",
-  "metamcpEndpoints": "MetaMCP Endpoints",
+  "metamcpNamespaces": "claude-meta-settings Namespaces",
+  "metamcpEndpoints": "claude-meta-settings Endpoints",
   "mcpInspector": "MCP Inspector",
   "apiKeys": "API Keys",
   "settings": "Settings",

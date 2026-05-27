@@ -1,13 +1,13 @@
 ---
 title: "Internationalization (i18n)"
-description: "Add multi-language support to MetaMCP with Next.js locale routing and client-side translations"
+description: "Add multi-language support to claude-meta-settings with Next.js locale routing and client-side translations"
 ---
 
-MetaMCP uses **Next.js locale-based routing** and **client-side translations** to support multiple languages. This guide explains the i18n system and how to add new languages.
+claude-meta-settings uses **Next.js locale-based routing** and **client-side translations** to support multiple languages. This guide explains the i18n system and how to add new languages.
 
 ## Current Language Support
 
-MetaMCP currently supports:
+claude-meta-settings currently supports:
 
 - **English (en)** - Default language
 - **Chinese Simplified (zh)** - Full translation available
@@ -55,7 +55,7 @@ apps/frontend/
 
 ### URL Structure
 
-MetaMCP uses locale-based routing:
+claude-meta-settings uses locale-based routing:
 
 - **English (default)**: `/mcp-servers`, `/settings`, `/namespaces`
 - **Chinese**: `/zh/mcp-servers`, `/zh/settings`, `/zh/namespaces`
@@ -362,7 +362,7 @@ export function LanguageSwitcher() {
 
 ### For New Features
 
-When adding new features to MetaMCP:
+When adding new features to claude-meta-settings:
 
 1. **Add English translations first** in appropriate namespace
 2. **Use descriptive keys** that make sense in context
@@ -500,7 +500,7 @@ export function TranslationDebugger() {
 
 <CardGroup cols={2}>
   <Card title="Contributing Guide" icon="handshake" href="/en/development/contributing">
-    Learn how to contribute to MetaMCP development
+    Learn how to contribute to claude-meta-settings development
   </Card>
   
   <Card title="Frontend Development" icon="code" href="/en/development">

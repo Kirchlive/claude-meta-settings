@@ -1,17 +1,17 @@
 ---
 title: "General Stdio Integration using `mcp-proxy` with API Key"
-description: "Configure any stdio-based MCP client to connect to MetaMCP endpoints using mcp-proxy"
+description: "Configure any stdio-based MCP client to connect to claude-meta-settings endpoints using mcp-proxy"
 ---
 
-**General Stdio Integration** allows any MCP client that supports stdio servers to connect to MetaMCP's remote endpoints. Since MetaMCP endpoints are remote-only (SSE, Streamable HTTP), you'll need a local proxy to bridge the connection.
+**General Stdio Integration** allows any MCP client that supports stdio servers to connect to claude-meta-settings's remote endpoints. Since claude-meta-settings endpoints are remote-only (SSE, Streamable HTTP), you'll need a local proxy to bridge the connection.
 
 ## Prerequisites
 
 Before starting, ensure you have:
 
 - **MCP client** that supports stdio servers (Claude Desktop, Cursor, etc.)
-- **MetaMCP** running locally or deployed
-- **Active endpoint** configured in MetaMCP
+- **claude-meta-settings** running locally or deployed
+- **Active endpoint** configured in claude-meta-settings
 - **API key** generated (if authentication is enabled)
 - **mcp-proxy** installed (`uvx mcp-proxy`)
 
@@ -19,13 +19,13 @@ Before starting, ensure you have:
 
 ### Using mcp-proxy (Required)
 
-Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between stdio and HTTP/SSE protocols.
+Since claude-meta-settings endpoints are remote only, you need `mcp-proxy` to convert between stdio and HTTP/SSE protocols.
 
 <CodeGroup>
 ```json Streamable HTTP (Recommended)
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -44,7 +44,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between
 ```json SSE (Alternative)
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -61,7 +61,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between
 ```json Multiple Endpoints
 {
   "mcpServers": {
-    "MetaMCP-Dev": {
+    "claude-meta-settings-Dev": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -73,7 +73,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between
         "API_ACCESS_TOKEN": "sk_mt_dev_key"
       }
     },
-    "MetaMCP-Research": {
+    "claude-meta-settings-Research": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -97,7 +97,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "command": "uvx",
           "args": [
             "mcp-proxy",
@@ -120,7 +120,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between
     ```json
     {
       "mcpServers": {
-        "MetaMCP": {
+        "claude-meta-settings": {
           "command": "uvx",
           "args": [
             "mcp-proxy",
@@ -137,7 +137,7 @@ Since MetaMCP endpoints are remote only, you need `mcp-proxy` to convert between
 
 ### Common Issues
 
-1. **Connection refused**: Ensure MetaMCP is running and accessible
+1. **Connection refused**: Ensure claude-meta-settings is running and accessible
 2. **Authentication failed**: Verify API key is correct and has proper permissions
 3. **mcp-proxy not found**: Install with `pip install mcp-proxy` or `uvx mcp-proxy`
 
@@ -148,7 +148,7 @@ Enable debug logging for mcp-proxy:
 ```json
 {
   "mcpServers": {
-    "MetaMCP": {
+    "claude-meta-settings": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -168,13 +168,13 @@ Enable debug logging for mcp-proxy:
 ## Important Notes
 
 - **Replace** `your-endpoint-name` with your actual endpoint name
-- **Replace** `sk_mt_your_api_key_here` with your MetaMCP API key
+- **Replace** `sk_mt_your_api_key_here` with your claude-meta-settings API key
 - **mcp-proxy** handles the protocol conversion between stdio and Streamable HTTP/SSE
 - **Environment variables** are the secure way to pass API keys
 
 <CardGroup cols={2}>
   <Card title="General Stdio Integration using `mcp-remote` with OAuth` with API Key" icon="globe" href="/en/integrations/general-stdio-with-oauth">
-    Configure any stdio-based MCP client to connect to MetaMCP endpoints using mcp-remote with OAuth
+    Configure any stdio-based MCP client to connect to claude-meta-settings endpoints using mcp-remote with OAuth
   </Card>
 
   <Card title="MCP OAuth Troubleshooting" icon="lock" href="/en/troubleshooting/oauth-troubleshooting">
@@ -182,10 +182,10 @@ Enable debug logging for mcp-proxy:
   </Card>
   
   <Card title="Connect to Cursor" icon="mouse-pointer-2" href="/en/integrations/cursor">
-    Configure Cursor IDE to use your MetaMCP endpoints
+    Configure Cursor IDE to use your claude-meta-settings endpoints
   </Card>
   
   <Card title="Connect to Claude Desktop" icon="monitor-dot" href="/en/integrations/claude-desktop">
-    Set up Claude Desktop with MetaMCP using mcp-proxy
+    Set up Claude Desktop with claude-meta-settings using mcp-proxy
   </Card>
 </CardGroup>

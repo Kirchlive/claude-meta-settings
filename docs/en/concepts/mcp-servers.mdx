@@ -1,13 +1,13 @@
 ---
 title: "MCP Servers"
-description: "Learn how to configure and manage MCP server instances in MetaMCP"
+description: "Learn how to configure and manage MCP server instances in claude-meta-settings"
 ---
 
-A **MCP Server** is a configuration that tells MetaMCP how to start and manage a Model Context Protocol server. These servers provide tools, resources, and prompts that can be aggregated and exposed through MetaMCP endpoints.
+A **MCP Server** is a configuration that tells claude-meta-settings how to start and manage a Model Context Protocol server. These servers provide tools, resources, and prompts that can be aggregated and exposed through claude-meta-settings endpoints.
 
 ## What is a MCP Server?
 
-MCP Servers are the building blocks of MetaMCP. Each server configuration defines:
+MCP Servers are the building blocks of claude-meta-settings. Each server configuration defines:
 
 - **How to start the server** (command, arguments, environment)
 - **What type of server it is** (STDIO, SSE, Streamable HTTP)
@@ -28,7 +28,7 @@ MCP Servers are the building blocks of MetaMCP. Each server configuration define
 
 ## Server Types
 
-MetaMCP supports three types of MCP servers:
+claude-meta-settings supports three types of MCP servers:
 
 <AccordionGroup>
   <Accordion icon="terminal" title="STDIO Servers">
@@ -205,7 +205,7 @@ Useful when your server requires:
 
 ### Adding Servers
 
-1. **Navigate** to MCP Servers in the MetaMCP dashboard
+1. **Navigate** to MCP Servers in the claude-meta-settings dashboard
 2. **Click** "Add Server" 
 3. **Configure** the server details
 4. **Test** the configuration
@@ -213,7 +213,7 @@ Useful when your server requires:
 
 ### Bulk Import/Export
 
-MetaMCP supports bulk import and export of MCP server configurations for easy migration and backup.
+claude-meta-settings supports bulk import and export of MCP server configurations for easy migration and backup.
 
 #### Exporting Servers
 
@@ -340,7 +340,7 @@ Use bulk import/export for:
 
 ### Idle Session Management
 
-MetaMCP pre-allocates idle sessions for better performance:
+claude-meta-settings pre-allocates idle sessions for better performance:
 
 <Card title="Cold Start Optimization" icon="zap">
 - **Default**: 1 idle session per server
@@ -351,7 +351,7 @@ MetaMCP pre-allocates idle sessions for better performance:
 
 ## Custom Dockerfile for Dependencies
 
-If your MCP servers require additional dependencies beyond `uvx` or `npx`, you can customize the MetaMCP Dockerfile:
+If your MCP servers require additional dependencies beyond `uvx` or `npx`, you can customize the claude-meta-settings Dockerfile:
 
 ```dockerfile
 FROM metamcp:latest
@@ -384,7 +384,7 @@ Custom dependencies increase the Docker image size and startup time. Consider us
     - Network connectivity issues (for SSE/Streamable HTTP)
     
     **Debug steps:**
-    1. Check server logs in MetaMCP dashboard
+    1. Check server logs in claude-meta-settings dashboard
     2. Test command manually in terminal
     3. Verify environment variables
     4. Check network connectivity
