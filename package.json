@@ -12,7 +12,7 @@
     "db:init": "node scripts/db.mjs init",
     "db:start": "node scripts/db.mjs start",
     "db:stop": "node scripts/db.mjs stop",
-    "setup": "node scripts/db.mjs init && pnpm build && pnpm --filter backend db:migrate && sh scripts/install-claude-hooks.sh",
+    "setup": "node scripts/db.mjs init && pnpm build && node scripts/db.mjs start && pnpm --filter backend db:migrate && sh scripts/install-claude-hooks.sh",
     "start": "node scripts/claude-meta-supervisor.mjs up",
     "stop": "node scripts/claude-meta-supervisor.mjs down"
   },

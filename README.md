@@ -189,6 +189,8 @@ pnpm install && pnpm run setup
 
 > **Use an existing PostgreSQL instead?** If `DATABASE_URL` points at a non-local server — or you set `USE_EXTERNAL_PG=1` — the embedded database is skipped and your server is used as-is.
 
+> **On WSL (repo under `/mnt/c`)?** PostgreSQL can't initialize its cluster on the Windows mount (`chmod 0700` doesn't stick on 9p/DrvFs), so claude-meta-settings **auto-relocates the cluster to an ext4 path** (`~/.local/share/claude-meta/pgdata`) — override with `CLAUDE_META_PGDATA`. If a system PostgreSQL already uses `:5432`, set `POSTGRES_PORT=5433` in `.env` (no `sudo` needed). See [deploy/native-deployment.md](deploy/native-deployment.md#wsl--windows-mntc).
+
 > **First install tip:** set `LOG_LEVEL=info` in `.env` to see bootstrap/startup diagnostics (namespaces, endpoints, API keys being created). The default is `errors-only`.
 
 If you modify `APP_URL`, access claude-meta-settings only from that URL — claude-meta-settings enforces a CORS policy against it, so no other URL is accessible.

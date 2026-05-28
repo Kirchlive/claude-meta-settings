@@ -65,6 +65,28 @@ non-`localhost` host) or set `USE_EXTERNAL_PG=1`. The embedded database is then 
 entirely and your server is used as-is. You are responsible for the role/database in
 that case.
 
+### WSL / Windows (`/mnt/c`)
+
+If the repo lives under `/mnt/c/...` (a Windows drive mounted via 9p/DrvFs), the embedded
+PostgreSQL **cannot initialize its cluster there**: `initdb` requires the data directory
+to be `0700`/`0750`, but `chmod` does not stick on that mount (it stays `0777`).
+claude-meta-settings detects this during `db init` and **automatically relocates the
+cluster to an ext4 path** — `~/.local/share/claude-meta/pgdata`, linked from `.pgdata/` —
+where permissions work. Override the location with `CLAUDE_META_PGDATA` if you prefer a
+different path.
+
+- **Cleanup caveat:** because the cluster then lives **outside** the repo, deleting the
+  project directory (`rm -rf`) leaves `~/.local/share/claude-meta/pgdata` behind — remove
+  it separately if you want a truly clean reset.
+- **Port:** if a system PostgreSQL already holds `:5432`, set `POSTGRES_PORT=5433` in
+  `.env` so the embedded database binds a free port and coexists with it — no `sudo`, and
+  no need to stop the system service.
+
+> **No `psql` bundled:** `embedded-postgres` ships only `initdb`, `pg_ctl`, and `postgres`
+> — not `psql`. To inspect the database, query it with the `pg` package from `apps/backend`
+> (e.g. `cd apps/backend && node -e "import('pg').then(...)"`) or use a separately
+> installed `psql` against `DATABASE_URL`.
+
 ## The session-bound lifecycle
 
 Setup registers `SessionStart`/`SessionEnd` hooks in `~/.claude/settings.json` that tie
