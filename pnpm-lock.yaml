@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      embedded-postgres:
+        specifier: 16.13.0-beta.17
+        version: 16.13.0-beta.17
     devDependencies:
       dotenv-cli:
         specifier: ^8.0.0
@@ -454,6 +458,54 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@embedded-postgres/darwin-arm64@16.13.0-beta.17':
+    resolution: {integrity: sha512-irYPz3unKrKWa4j5+5Quufc2kyBWDEfOTR14lw1VaX2S0L06LKCER9w5HWYwrLuV0dcHVwtTC2YTDnE6nNz/Gg==}
+    engines: {node: '>=16'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@embedded-postgres/darwin-x64@16.13.0-beta.17':
+    resolution: {integrity: sha512-YeP3NGafOvVc3m35eDWws195Qta8CY9kcd6ZmwXGfr9liBT0x2b166/OdeilMTDfgMm2Wbbf2osOvCuj/ej2hQ==}
+    engines: {node: '>=16'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@embedded-postgres/linux-arm64@16.13.0-beta.17':
+    resolution: {integrity: sha512-8a2x47HIAsTkWy2o+Jf7PT4p/mXBNY6IourvjIbupaVsmRXWnpcPEtURaa8mYWoOmDgnm+61W4N0DoTmNoYKew==}
+    engines: {node: '>=16'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@embedded-postgres/linux-arm@16.13.0-beta.17':
+    resolution: {integrity: sha512-ZZ+2UMieAeIhYiU2MacNWIZibmiRC7Sx5FnNTarkf2ZYpH2lSpYmOKwWGTcwznQS4dQ3FIo3T73PZsGxS/5x1A==}
+    engines: {node: '>=16'}
+    cpu: [arm]
+    os: [linux]
+
+  '@embedded-postgres/linux-ia32@16.13.0-beta.17':
+    resolution: {integrity: sha512-3aG0j3RoX0Zv8GP2WRaqyXanUEXyrwefuw34Nx/FI2JSgCWYWu5ziRVNSsCnr0S32hknCPWxSUC9a+phQ9bjLA==}
+    engines: {node: '>=16'}
+    cpu: [ia32]
+    os: [linux]
+
+  '@embedded-postgres/linux-ppc64@16.13.0-beta.17':
+    resolution: {integrity: sha512-OAhKWtWpFl0Qs3GuGJUyhOG+0+UfpexfCRlyntZj3pbi0Qd8NV9s6pNGkjx0/DZSR9bBnhGE6ZdDlHGtW/k6Wg==}
+    engines: {node: '>=16'}
+    cpu: [ppc64]
+    os: [linux]
+
+  '@embedded-postgres/linux-x64@16.13.0-beta.17':
+    resolution: {integrity: sha512-NKvxtem0CyJY2AEK7zYtoUaE54gO1i1O8lDlafUK9dLY+RKqZOyX9VcYCcCeI7ne507An2sjlwTE0nx37KpO/Q==}
+    engines: {node: '>=16'}
+    cpu: [x64]
+    os: [linux]
+
+  '@embedded-postgres/windows-x64@16.13.0-beta.17':
+    resolution: {integrity: sha512-jLDV9O5KmoZbv4HyF/UdbJZrnYJTdWSpGxP0RsTxV46PBNN5Yi1DbfFIrVEqgx3uMK0YUgo4g9LpGKq2AX9YpA==}
+    engines: {node: '>=16'}
+    cpu: [x64]
+    os: [win32]
 
   '@emnapi/runtime@1.7.1':
     resolution: {integrity: sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==}
@@ -2056,6 +2108,10 @@ packages:
   ast-v8-to-istanbul@0.3.8:
     resolution: {integrity: sha512-szgSZqUxI5T8mLKvS7WTjF9is+MVbOeLADU73IseOcrqhxr/VAvy6wfoVE39KnKzA7JRhjF5eUagNlHwvZPlKQ==}
 
+  async-exit-hook@2.0.1:
+    resolution: {integrity: sha512-NW2cX8m1Q7KPA7a5M2ULQeZ2wR5qI5PAbw5L0UOMxdioVk9PMZ0h1TmyZEkPYrCvYjDlFICusOu1dlEKAAeXBw==}
+    engines: {node: '>=0.12.0'}
+
   async-function@1.0.0:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
     engines: {node: '>= 0.4'}
@@ -2475,6 +2531,10 @@ packages:
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+
+  embedded-postgres@16.13.0-beta.17:
+    resolution: {integrity: sha512-XRwf6Wix5qtp6I8S0ycNkUMMUcZH9gxBJ/qdBH17/UVUsibnduJzSC8eW+ADPfv9R4Heaesa0HCt9n3WgK/ang==}
+    engines: {node: '>=16'}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -4421,6 +4481,30 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
+  '@embedded-postgres/darwin-arm64@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/darwin-x64@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/linux-arm64@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/linux-arm@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/linux-ia32@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/linux-ppc64@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/linux-x64@16.13.0-beta.17':
+    optional: true
+
+  '@embedded-postgres/windows-x64@16.13.0-beta.17':
+    optional: true
+
   '@emnapi/runtime@1.7.1':
     dependencies:
       tslib: 2.8.1
@@ -5876,6 +5960,8 @@ snapshots:
       estree-walker: 3.0.3
       js-tokens: 9.0.1
 
+  async-exit-hook@2.0.1: {}
+
   async-function@1.0.0: {}
 
   available-typed-arrays@1.0.7:
@@ -6168,6 +6254,22 @@ snapshots:
   eastasianwidth@0.2.0: {}
 
   ee-first@1.1.1: {}
+
+  embedded-postgres@16.13.0-beta.17:
+    dependencies:
+      async-exit-hook: 2.0.1
+      pg: 8.16.0
+    optionalDependencies:
+      '@embedded-postgres/darwin-arm64': 16.13.0-beta.17
+      '@embedded-postgres/darwin-x64': 16.13.0-beta.17
+      '@embedded-postgres/linux-arm': 16.13.0-beta.17
+      '@embedded-postgres/linux-arm64': 16.13.0-beta.17
+      '@embedded-postgres/linux-ia32': 16.13.0-beta.17
+      '@embedded-postgres/linux-ppc64': 16.13.0-beta.17
+      '@embedded-postgres/linux-x64': 16.13.0-beta.17
+      '@embedded-postgres/windows-x64': 16.13.0-beta.17
+    transitivePeerDependencies:
+      - pg-native
 
   emoji-regex@8.0.0: {}
 

@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
   experimental: {
     proxyTimeout: 1000 * 120,
   },

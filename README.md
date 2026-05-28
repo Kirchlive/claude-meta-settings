@@ -31,6 +31,8 @@
   - [🔍 **Inspector**](#-inspector)
   - [✏️ **Tool Overrides \& Annotations**](#️-tool-overrides--annotations)
 - [🚀 Quick Start](#-quick-start)
+  - [🔄 Auto-Start with Claude Code Sessions](#-auto-start-with-claude-code-sessions)
+  - [🟢 Manual Start / Stop](#-manual-start--stop)
   - [💻 Local Development](#-local-development)
 - [🔌 MCP Protocol Compatibility](#-mcp-protocol-compatibility)
 - [🔗 Connect to claude-meta-settings](#-connect-to-claude-meta-settings)
@@ -135,26 +137,58 @@ Similar to the official MCP inspector, but with **saved server configs** - claud
 
 ## 🚀 Quick Start
 
-claude-meta-settings runs as **two Node processes plus PostgreSQL** — no Docker required.
+claude-meta-settings runs as **two Node processes plus an embedded, userspace PostgreSQL** — **no Docker, no sudo, and no system PostgreSQL install**. The database is provisioned automatically via [`embedded-postgres`](https://www.npmjs.com/package/embedded-postgres) (PostgreSQL 16 binaries, data kept repo-locally in `.pgdata/`).
 
-**Prerequisites:** Node.js 20+, pnpm 9, PostgreSQL 16.
+**Prerequisites:** Node.js 20+ and pnpm 9. That's it — PostgreSQL is bundled.
 
 ```bash
 git clone https://github.com/Kirchlive/claude-meta-settings.git
 cd claude-meta-settings
-pnpm install --frozen-lockfile
-sh scripts/patch-next-proxy-timeout.sh                 # bump Next.js proxy timeout for long MCP calls
-cp example.env .env                                    # set DATABASE_URL, BETTER_AUTH_SECRET, APP_URL,
-                                                       # NEXT_PUBLIC_APP_URL; TRANSFORM_LOCALHOST_TO_DOCKER_INTERNAL=false
-NEXT_PUBLIC_APP_URL="http://localhost:12008" pnpm build
-cd apps/backend && pnpm exec drizzle-kit migrate && cd -   # create the DB/role first
-PORT=12009 node apps/backend/dist/index.js &           # backend
-PORT=12008 pnpm --filter frontend start                # frontend → http://localhost:12008
+cp example.env .env          # adjust BETTER_AUTH_SECRET (openssl rand -hex 32) etc.
+pnpm install && pnpm run setup
 ```
 
-See **[deploy/native-deployment.md](deploy/native-deployment.md)** for the full guide — env vars (build-time vs runtime), process managers (systemd/launchd/pm2), nginx, and migrating an existing Docker deployment.
+`pnpm run setup` is a single, sudo-free command that:
+
+1. installs dependencies and patches the Next.js proxy timeout (via `postinstall`),
+2. initializes the embedded PostgreSQL in `.pgdata/` and creates the `metamcp_user` role and `metamcp_db` database (idempotent),
+3. builds the backend and frontend,
+4. runs database migrations, and
+5. registers the Claude Code session hooks (see below).
+
+> **Use an existing PostgreSQL instead?** If `DATABASE_URL` points at a non-local server — or you set `USE_EXTERNAL_PG=1` — the embedded database is skipped and your server is used as-is.
+
+> **First install tip:** set `LOG_LEVEL=info` in `.env` to see bootstrap/startup diagnostics (namespaces, endpoints, API keys being created). The default is `errors-only`.
 
 If you modify `APP_URL`, access claude-meta-settings only from that URL — claude-meta-settings enforces a CORS policy against it, so no other URL is accessible.
+
+See **[deploy/native-deployment.md](deploy/native-deployment.md)** for the full guide — the embedded vs. external database, env vars (build-time vs runtime), the session-bound lifecycle, nginx, and migrating an existing Docker deployment.
+
+### **🔄 Auto-Start with Claude Code Sessions**
+
+The setup step registers `SessionStart`/`SessionEnd` hooks in `~/.claude/settings.json` so the whole stack follows your Claude Code sessions:
+
+- The **first** Claude Code session starts the stack (embedded PostgreSQL → backend `:12009` → frontend `:12008`). `SessionStart` blocks until `http://localhost:12008/health` returns `200`, so the meta MCP server is reachable on the first try — no `/mcp` reconnect needed.
+- Parallel sessions share the running stack (reference-counted).
+- The **last** session to close stops the stack and frees ports `12008`, `12009`, and `5432`.
+
+The hooks also ensure an `mcpServers` HTTP entry exists in `~/.claude.json` pointing at `http://localhost:12008/metamcp/<endpoint>/mcp`.
+
+Register or remove the hooks manually with:
+
+```bash
+sh scripts/install-claude-hooks.sh      # done for you by `pnpm run setup`
+sh scripts/uninstall-claude-hooks.sh    # remove the session hooks
+```
+
+### **🟢 Manual Start / Stop**
+
+To run the stack outside the session hooks (e.g. for one-off testing):
+
+```bash
+pnpm start    # embedded PostgreSQL → backend → frontend, with health gate
+pnpm stop     # stops the stack and frees the ports
+```
 
 ### **💻 Local Development**
 
@@ -163,7 +197,7 @@ pnpm install
 pnpm dev
 ```
 
-`pnpm dev` runs the frontend (:12008) and backend (:12009) in watch mode. You need a PostgreSQL 16 instance reachable via `DATABASE_URL` in your `.env`.
+`pnpm dev` runs the frontend (:12008) and backend (:12009) in watch mode against a PostgreSQL reachable via `DATABASE_URL` in your `.env`. Start the bundled database first with `pnpm db:start` (or point `DATABASE_URL` at your own).
 
 ## 🔌 MCP Protocol Compatibility
 

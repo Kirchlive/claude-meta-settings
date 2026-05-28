@@ -51,3 +51,6 @@ compose.override.yml
 .claude/worktrees/
 .env.*.bak
 *.log
+
+# Userspace embedded-postgres data dir
+.pgdata/
