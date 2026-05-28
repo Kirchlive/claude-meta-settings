@@ -4,6 +4,7 @@ import logger from "@/utils/logger";
 
 import { configService } from "../config.service";
 import { ConnectedClient, connectMetaMcpClient } from "./client";
+import { Semaphore, spawnConcurrency } from "./concurrency";
 import { serverErrorTracker } from "./server-error-tracker";
 
 export interface McpServerPoolStatus {
@@ -46,6 +47,11 @@ export class McpServerPool {
 
   // Maximum total connections (idle + active) to prevent runaway process spawning
   private readonly maxTotalConnections: number;
+
+  // Bounds how many sub-server connections may be SPAWNED concurrently, so a
+  // wide namespace fan-out does not pin the CPU. Independent of maxTotalConnections
+  // (which caps the total count, not the simultaneous spawn rate).
+  private readonly spawnSemaphore = new Semaphore(spawnConcurrency());
 
   private constructor(
     defaultIdleCount: number = 1,
@@ -146,9 +152,10 @@ export class McpServerPool {
       `Creating new connection for server ${params.name} (${params.uuid}) with namespace: ${namespaceUuid || "none"}`,
     );
 
-    const connectedClient = await connectMetaMcpClient(
-      params,
-      (exitCode, signal) => {
+    const connectedClient = await this.spawnSemaphore.run(() =>
+      connectMetaMcpClient(
+        params,
+        (exitCode, signal) => {
         logger.info(
           `Crash handler callback called for server ${params.name} (${params.uuid}) with namespace: ${namespaceUuid || "none"}`,
         );
@@ -181,6 +188,7 @@ export class McpServerPool {
           });
         }
       },
+      ),
     );
     if (!connectedClient) {
       return undefined;
