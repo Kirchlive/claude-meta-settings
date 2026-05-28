@@ -14,6 +14,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import {
   closeSync,
+  existsSync,
   mkdirSync,
   openSync,
   readFileSync,
@@ -145,16 +146,57 @@ async function waitForHealth(timeoutMs = 60_000, intervalMs = 1_000) {
 
 // ---- stack control --------------------------------------------------------
 
-function startDetached(command, args, logFile) {
+function startDetached(command, args, logFile, env = process.env) {
   const out = openSync(logFile, "a");
   const child = spawn(command, args, {
     cwd: REPO_ROOT,
     detached: true,
     stdio: ["ignore", out, out],
-    env: process.env,
+    env,
   });
   child.unref();
   return child.pid;
+}
+
+// ---- env --------------------------------------------------------------------
+
+const ENV_FILE = join(REPO_ROOT, ".env");
+
+function parseEnv(text) {
+  const out = {};
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq < 0) continue;
+    const key = line.slice(0, eq).trim();
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) continue;
+    let val = line.slice(eq + 1).trim();
+    if (val[0] === '"' || val[0] === "'") {
+      const q = val[0];
+      const end = val.indexOf(q, 1);
+      val = end > 0 ? val.slice(1, end) : val.slice(1);
+    } else {
+      const c = val.indexOf(" #"); // strip trailing inline comment on bare values
+      if (c >= 0) val = val.slice(0, c).trim();
+    }
+    out[key] = val;
+  }
+  return out;
+}
+
+// Merge repo-root .env over the inherited environment, expanding ${VAR}
+// references. The backend self-loads .env via dotenv, but the frontend
+// (`next start`) does not — it needs APP_URL / NEXT_PUBLIC_APP_URL / PORT in
+// its process env or it exits on boot.
+function buildEnv() {
+  const env = { ...process.env };
+  if (!existsSync(ENV_FILE)) return env;
+  const parsed = parseEnv(readFileSync(ENV_FILE, "utf8"));
+  for (const [k, v] of Object.entries(parsed)) {
+    env[k] = v.replace(/\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g, (_, n) => env[n] ?? "");
+  }
+  return env;
 }
 
 async function startStack() {
@@ -169,18 +211,23 @@ async function startStack() {
     throw new Error(`db start failed (exit ${db.status})`);
   }
 
+  const baseEnv = buildEnv();
+
   // 2. backend (loads .env via dotenv from repo-root cwd, listens on :12009)
   const backendPid = startDetached(
     process.execPath,
     [BACKEND_ENTRY],
     BACKEND_LOG,
+    baseEnv,
   );
 
-  // 3. frontend (Next.js, :12008, proxies /metamcp/ -> :12009)
+  // 3. frontend (Next.js, :12008, proxies /metamcp/ -> :12009). next start
+  //    reads PORT from the env; pin it so it does not fall back to :3000.
   const frontendPid = startDetached(
     "pnpm",
     ["--filter", "frontend", "start"],
     FRONTEND_LOG,
+    { ...baseEnv, PORT: String(FRONTEND_PORT) },
   );
 
   writePids({ backend: backendPid, frontend: frontendPid });
