@@ -43,6 +43,21 @@ export async function initializeOnStartup(): Promise<void> {
  * Startup function to initialize idle servers for all namespaces and all MCP servers
  */
 export async function initializeIdleServers() {
+  // Pre-warming spawns an idle session for every server in the pool AND for
+  // every server per namespace — dozens of simultaneous npx/uvx resolutions
+  // that pin the CPU at startup. Under the session-lifecycle model the stack
+  // restarts on every first Claude Code session, so default this OFF here via
+  // env to spawn servers lazily on first use instead.
+  const disabled = ["0", "false", "no", "n", "off"].includes(
+    (process.env.INITIALIZE_IDLE_SERVERS ?? "").trim().toLowerCase(),
+  );
+  if (disabled) {
+    console.log(
+      "Idle server pre-warming disabled via INITIALIZE_IDLE_SERVERS — servers spawn lazily on first use.",
+    );
+    return;
+  }
+
   try {
     console.log(
       "Initializing idle servers for all namespaces and all MCP servers...",
