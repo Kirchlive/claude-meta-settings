@@ -172,7 +172,19 @@ The setup step registers `SessionStart`/`SessionEnd` hooks in `~/.claude/setting
 - Parallel sessions share the running stack (reference-counted).
 - The **last** session to close stops the stack and frees ports `12008`, `12009`, and `5432`.
 
-The hooks also ensure an `mcpServers` HTTP entry exists in `~/.claude.json` pointing at `http://localhost:12008/metamcp/<endpoint>/mcp`.
+The hooks also ensure an `mcpServers` HTTP entry exists in `~/.claude.json`. By convention this server is named simply **`meta`** everywhere — that is the name its tools appear under in Claude Code (`mcp__meta__*`):
+
+```json
+{
+  "mcpServers": {
+    "meta": {
+      "type": "http",
+      "url": "http://localhost:12008/metamcp/<YOUR_ENDPOINT_NAME>/mcp",
+      "headers": { "Authorization": "Bearer <YOUR_API_KEY_HERE>" }
+    }
+  }
+}
+```
 
 Register or remove the hooks manually with:
 
@@ -215,7 +227,7 @@ Example `mcp.json`
 ```json
 {
   "mcpServers": {
-    "claude-meta-settings": {
+    "meta": {
       "url": "http://localhost:12008/metamcp/<YOUR_ENDPOINT_NAME>/sse"
     }
   }
@@ -235,7 +247,7 @@ Using Streamable HTTP
 ```json
 {
   "mcpServers": {
-    "claude-meta-settings": {
+    "meta": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
@@ -256,7 +268,7 @@ Using SSE
 ```json
 {
   "mcpServers": {
-    "ehn": {
+    "meta": {
       "command": "uvx",
       "args": [
         "mcp-proxy",
