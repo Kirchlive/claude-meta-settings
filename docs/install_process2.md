@@ -777,7 +777,7 @@ claude --dangerously-skip-permissions
 ? Bash(SECRET=$(cat /tmp/cms_secret.txt); sed -i "s|BETTER_AUTH_SECRET=your-super-secret-key-change-this-in-production|BETTER_AUTH_SECRET=$SECRET|" .env &&
       grep -nE '^LOG_LEVEL|^BETTER_AUTH_SECRET' .env && rm -f /tmp/cms_secret.txt)
   ?  2:LOG_LEVEL='info' #'all', 'info', 'errors-only', 'none' — use 'info' for the first install to see bootstrap/startup logs
-     32:BETTER_AUTH_SECRET=eb1b87b4929e6817604d81133ce4543584b7192646dda135034d94b34090a623
+     32:BETTER_AUTH_SECRET=<redacted-better-auth-secret>
 
 ? .env ist fertig. Jetzt der Ein-Befehl-Install: pnpm install && pnpm run setup (initdb ? build ? migrate ? Hooks). Das dauert mehrere Minuten; ich lasse es
   im Hintergrund laufen.
@@ -1284,7 +1284,7 @@ claude --dangerously-skip-permissions
          ],
          "env": {
            "OPENAI_API_KEY": "sk-proj-Q2e...a_u
-     yLWUpg3Td6KB9HpG6XIBAqJbIlzxv29hpKwHcPHLQA",
+     <redacted>",
            "VOICEMODE_STREAMING_ENABLED": "true",
            "VOICEMODE_STREAM_MAX_BUFFER": "10.0",
            "VOICEMODE_STREAM_CHUNK_SIZE": "8192",
@@ -1314,7 +1314,7 @@ claude --dangerously-skip-permissions
       const fs=require("fs");const p=require("os").homedir()+"/.claude.json";
       const j=JSON.parse(fs.readFileSync(p,"utf8"));
       j.mcpServers.meta={type:"http",url:"http://localhost:12008/metamcp/Public/mcp",headers:{Authorization:"Bearer
-      sk_mt_70ccc48c5c7cf68a8e3bc2444fc14849a6069d75d985c73c5e20dc5dc44cde92"}};
+      sk_mt_<redacted>"}};
       fs.writeFileSync(p,JSON.stringify(j,null,2));
       console.log("updated meta:",JSON.stringify(j.mcpServers.meta,null,2));
       ')
@@ -1322,7 +1322,7 @@ claude --dangerously-skip-permissions
        "type": "http",
        "url": "http://localhost:12008/metamcp/Public/mcp",
        "headers": {
-         "Authorization": "Bearer sk_mt_70ccc48c5c7cf68a8e3bc2444fc14849a6069d75d985c73c5e20dc5dc44cde92"
+         "Authorization": "Bearer sk_mt_<redacted>"
        }
      }
 
@@ -1331,7 +1331,7 @@ claude --dangerously-skip-permissions
 ? Bash(curl -s -X POST http://localhost:12008/metamcp/Public/mcp \
         -H "Content-Type: application/json" \
         -H "Accept: application/json, text/event-stream" \
-        -H "Authorization: Bearer sk_mt_70ccc48c5c7cf68a8e3bc2444fc14849a6069d75d985c73c5e20dc5dc44cde92" \
+        -H "Authorization: Bearer sk_mt_<redacted>" \
         -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"verify","version":
       "1.0"}}}' \
         -i 2>&1 | head -40)

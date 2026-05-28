@@ -799,7 +799,7 @@ The project includes built-in authentication, OIDC support, and rate limiting fe
      POSTGRES_PASSWORD=m3t4mcp
      POSTGRES_DB=metamcp_db
      DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-     BETTER_AUTH_SECRET=f022c76e8352570028fc35e2e490aafc84bd7113672e72ad55699c34b4930395
+     BETTER_AUTH_SECRET=<redacted-better-auth-secret>
      TRANSFORM_LOCALHOST_TO_DOCKER_INTERNAL=false
 
 ? .env ist fertig. Jetzt brauche ich von dir die PostgreSQL-Installation, da sudo interaktiv ist. Bitte führe die folgenden Befehle in diesem Chat mit dem
