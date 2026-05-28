@@ -21,6 +21,7 @@
 
 ## 📋 Table of Contents <!-- omit in toc -->
 
+- [🆕 What's New in the Native Edition](#-whats-new-in-the-native-edition)
 - [🎯 Use Cases](#-use-cases)
 - [📖 Concepts](#-concepts)
   - [🖥️ **MCP Server**](#️-mcp-server)
@@ -61,6 +62,36 @@
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 - [🙏 Credits](#-credits)
+
+## 🆕 What's New in the Native Edition
+
+`claude-meta-settings` is a native-first, Claude-Code-integrated fork of [MetaMCP](https://github.com/metatool-ai/metamcp). It keeps the full aggregator/orchestrator feature set documented below and adds a **Docker-free, sudo-free, session-bound** runtime designed to just work on a developer machine. Summary of what changed versus upstream:
+
+### 💻 Docker-free native deployment
+- Removed all Docker / Docker Compose / Dev Container artifacts and the GHCR publishing workflow. The stack is just two Node processes — backend (`:12009`) and frontend (`:12008`) — plus PostgreSQL.
+- Full native guide in [`deploy/native-deployment.md`](deploy/native-deployment.md).
+
+### 🔋 Sudo-free userspace PostgreSQL
+- Bundled **`embedded-postgres`** (PostgreSQL 16) runs entirely in user space — no `sudo`, no Docker, no system service. The cluster lives repo-local in `.pgdata/`.
+- Managed by `scripts/db.mjs` via `pg_ctl` daemonization, so the database survives one-shot CLI calls.
+- Point `DATABASE_URL` at an existing server (or set `USE_EMBEDDED_PG=false`) to skip the embedded database entirely.
+
+### 🔄 Session-bound lifecycle (auto start/stop)
+- `SessionStart` / `SessionEnd` hooks plus a reference-counted supervisor (`scripts/claude-meta-supervisor.mjs`) start the stack with your **first** Claude Code session and stop it with the **last**. Parallel sessions share one stack; a health-gate on `:12008` means the `meta` MCP server connects on the first try (no `/mcp` reconnect).
+- Installed/removed by `scripts/install-claude-hooks.sh` / `scripts/uninstall-claude-hooks.sh` (run for you by `pnpm run setup`).
+
+### ⚡ One-command, hardened install
+- `pnpm install && pnpm run setup` — sudo-free, end to end (init DB → build → migrate → register hooks).
+- The backend now loads `.env` via `dotenv` (fixes `BOOTSTRAP_*` JSON parsing on first start), the Next.js proxy-timeout patch runs automatically as a `postinstall` hook, and `output: "standalone"` was dropped for a clean `next start`.
+
+### 🚀 Bounded, clean startup for any MCP stack
+- **`INITIALIZE_IDLE_SERVERS`** (default `false` here): skip idle pre-warming so MCP servers spawn lazily on first use instead of all at once on boot.
+- **`MCP_SPAWN_CONCURRENCY`** (default `6`): cap how many sub-servers spawn simultaneously, so a large npm *or* Python MCP stack comes up in bounded waves instead of pinning the CPU — regardless of stack size.
+
+### 🏷️ Rebrand, leaner repo & the `meta` convention
+- Rebranded MetaMCP → **claude-meta-settings** in a standalone repository. The `/metamcp/` route prefix, database names, and internal server identity are intentionally preserved for compatibility with running clients.
+- Trimmed non-English docs and unused integration guides for a leaner repo.
+- The aggregated server is named **`meta`** everywhere in client configs — its tools surface as `mcp__meta__*` in Claude Code.
 
 ## 🎯 Use Cases
 - 🏷️ **Group MCP servers into namespaces, host them as meta-MCPs, and assign public endpoints** (SSE or Streamable HTTP), with auth. One-click to switch a namespace for an endpoint.
